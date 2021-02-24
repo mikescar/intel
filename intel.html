@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="psl.min.js"></script>
+  </head>
+
+  <body>
+
+    <form>
+      <h3>Domains:</h3>
+      <input type="text" class="domain_val" name="domains[]"><br>
+      <input type="text" class="domain_val" name="domains[]"><br>
+      <input type="submit" id="domain_submit">
+    </form>
+
+    <script>
+      // Sites where you can link directly to the results page
+      function openAppendSites(domain) {
+        const sites = [
+          "https://sitecheck.sucuri.net/results/",
+          "https://www.ssllabs.com/ssltest/analyze.html?latest&d="
+        ];
+
+        $.each(sites, function(i, url) {
+          fullUrl = url + domain;
+          window.open(fullUrl, fullUrl);
+        });
+      }
+
+      // Sites that require login
+      function openLoginSites() {
+        const sites = [
+          "https://securitytrails.com/app/account"
+        ];
+
+        $.each(sites, function(i, url) {
+          window.open(url, url)
+        });
+      }
+
+      $("#domain_submit").on("click", function(e) {
+        $(".domain_val").each(function() {
+          var domain = $(this).val().trim();
+
+          if (domain.length == 0) return;
+
+          if (psl.isValid(domain)) {
+            openAppendSites(domain);
+          } else {
+            alert ("Bad Domain: " + domain);
+          }
+        });
+
+        openLoginSites();
+
+        return false;
+      });
+    </script>
+
+  </body>
+
+</html>
