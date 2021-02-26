@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="psl.min.js"></script>
+    <!-- <script type="text/javascript" src="psl.min.js"></script> -->
   </head>
 
   <body>
@@ -31,10 +31,11 @@
         });
       }
 
-      // Sites that require login
-      function openLoginSites() {
+      // Sites that require login or a POST request to get results
+      function openManualSites() {
         const sites = [
-          "https://securitytrails.com/app/account"
+          "https://securitytrails.com/app/account",
+          "https://dnschecker.org/server-headers-check.php"
         ];
 
         $.each(sites, function(i, url) {
@@ -48,14 +49,14 @@
 
           if (domain.length == 0) return;
 
-          if (psl.isValid(domain)) {
+          if (domain.match(/^[a-zA-Z0-9\.]+\.[a-zA-Z0-9]+$/)) {
             openAppendSites(domain);
           } else {
             alert ("Bad Domain: " + domain);
           }
         });
 
-        openLoginSites();
+        openManualSites();
 
         return false;
       });
